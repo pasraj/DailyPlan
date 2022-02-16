@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 class Organization(models.Model):
     name = models.CharField(max_length=50)
+    users = models.ManyToManyField(User)
 
 class TodayYesterdayUpdate(models.Model):
     user = models.ForeignKey(User,null=True, on_delete=models.CASCADE)
