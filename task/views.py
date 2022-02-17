@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from . models import TodayYesterdayUpdate
+from . models import TodayYesterdayUpdate, Organization
+from django.http import HttpResponse
 # Create your views here.
 
 def task_view(request):
