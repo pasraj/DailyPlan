@@ -3,6 +3,8 @@ from . models import TodayYesterdayUpdate, Organization
 from django.http import HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from datetime import date
+
 # Create your views here.
 
 
@@ -34,5 +36,6 @@ def task_view(request):
         if user in org.users.all():
             organization = org
             break
-    tasks = TodayYesterdayUpdate.objects.filter(organization=organization)
+    today = date.today()
+    tasks = TodayYesterdayUpdate.objects.filter(organization=organization, date=today)
     return render(request, 'task.html', {'tasks': tasks})
