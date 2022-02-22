@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    {% if pk %}
+    <form action="/task/update/{{pk}}/" method="post">
+      {% else %}
+      <form action="/task/create/" method="post">
+      {% endif %}
+
+      {% csrf_token %}
+
+      {{ form|crispy }}
+
+       <button type="submit" class="btn btn-success">Submit</button>
+
+    </form>
+
+{% endblock %}

@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% load bootstrap4 %}
+{% bootstrap_css %}
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -38,6 +40,17 @@
   </style>
 </head>
 <body>
+  <div class="px-5">
+      {% if data %}
+      <a class="btn btn-primary" href="/task/update/{{data.id}}/">Update task</a>
+      {% else %}
+      <a class="btn btn-primary" href="/task/create/">fill task</a>
+      {% endif %}
+
+      <a class="btn btn-warning float-right" href="/logout/"> logout </a>
+  </div>
+
+
   <table>
     <thead>
       <tr>

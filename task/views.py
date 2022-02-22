@@ -4,6 +4,9 @@ from django.http import HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from datetime import date
+from . form import TaskUpDateForm
+
+today = date.today()
 
 # Create your views here.
 
@@ -27,6 +30,7 @@ def logout_view(request):
     logout(request)
     return render(request, 'login.html')
 
+
 @login_required(login_url='/')
 def task_view(request):
     user = request.user
@@ -36,6 +40,47 @@ def task_view(request):
         if user in org.users.all():
             organization = org
             break
-    today = date.today()
-    tasks = TodayYesterdayUpdate.objects.filter(organization=organization, date=today)
-    return render(request, 'task.html', {'tasks': tasks})
+    tasks = TodayYesterdayUpdate.objects.filter(organization=organization,
+        date=today)
+    own_data = TodayYesterdayUpdate.objects.filter(organization=organization,
+        date=today, user=request.user)
+    if own_data:
+        return render(request, 'task.html', {"tasks":tasks, "data":own_data[0]})
+    return render(request, 'task.html', {"tasks":tasks, "data":own_data})
+
+
+@login_required(login_url='/')
+def create_task(request, pk=None):
+    organization = Organization.objects.all()[0]
+    if request.method == "GET":
+        if pk is not None:
+            try:
+                data = TodayYesterdayUpdate.objects.get(id=pk)
+                if data.user == request.user:
+                    form = TaskUpDateForm(instance=data)
+                    return render(request, 'taskform.html', {"form":form, "pk":pk})
+                return HttpResponse("You are not authorised for this link")
+            except:
+                pass
+        # if user already created task but hit by url create task link
+        if TodayYesterdayUpdate.objects.filter(organization=organization,
+            date=today, user=request.user):
+            return HttpResponse("you are already created task")
+        form = TaskUpDateForm()
+        return render(request, 'taskform.html', {"form":form})
+
+    if request.method == "POST":
+        if pk is not None:
+            data = TodayYesterdayUpdate.objects.get(id=pk)
+            form = TaskUpDateForm(request.POST, instance=data)
+            if form.is_valid():
+                form.save()
+                return redirect('/task/')
+        form = TaskUpDateForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.organization = organization
+            post.save()
+            return redirect('/task/')
+    return HttpResponse("Invalid form!! Try Again")
