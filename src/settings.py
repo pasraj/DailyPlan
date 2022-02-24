@@ -32,7 +32,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'django_extensions',
     'bootstrap4',
-    'crispy_forms',
 
     'task',
 ]

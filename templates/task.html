@@ -63,10 +63,10 @@
     <tbody>
       {% for task in tasks %}
       <tr>
-        <td>{{task.user.get_full_name}}</td>
-        <td>{{task.today_update}}</td>
-        <td>{{task.yesterday_update}}</td>
-        <td>{{task.blocker}}</td>
+        <td>{{task.user.get_full_names}}</td>
+        <td>{{task.today_update|linebreaks}}</td>
+        <td>{{task.yesterday_update|linebreaks}}</td>
+        <td>{{task.blocker|linebreaks}}</td>
       </tr>
       {% endfor %}
     </tbody>

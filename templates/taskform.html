@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
-
-{% load crispy_forms_tags %}
-
 {% block content %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
     {% if pk %}
     <form action="/task/update/{{pk}}/" method="post">
       {% else %}
@@ -11,9 +10,16 @@
 
       {% csrf_token %}
 
-      {{ form|crispy }}
+      {% bootstrap_form form layout='horizontal' %}
 
-       <button type="submit" class="btn btn-success">Submit</button>
+
+      <div class="row">
+             <div class="col-3">
+             </div>
+             <div class="col-6">
+               {% bootstrap_button "submit" button_type="submit" button_class="btn-primary ms-60" %}
+             </div>
+           </div>
 
     </form>
 
