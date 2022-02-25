@@ -32,7 +32,7 @@ def logout_view(request):
 
 
 @login_required(login_url='/')
-def task_view(request):
+def task_view(request, date=None):
     user = request.user
     orgs = Organization.objects.all()
     organization = Organization
@@ -42,6 +42,9 @@ def task_view(request):
             break
     tasks = TodayYesterdayUpdate.objects.filter(organization=organization,
         date=today)
+
+    # if there is not data for today data will created for requested user
+    # if data created for today then data will be updated for requested user
     own_data = TodayYesterdayUpdate.objects.filter(organization=organization,
         date=today, user=request.user)
     if own_data:
@@ -61,7 +64,8 @@ def create_task(request, pk=None):
                     return render(request, 'taskform.html', {"form":form, "pk":pk})
                 return HttpResponse("You are not authorised for this link")
             except:
-                pass
+                return HttpResponse("Something went wrong!!")
+
         # if user already created task but hit by url create task link
         if TodayYesterdayUpdate.objects.filter(organization=organization,
             date=today, user=request.user):
