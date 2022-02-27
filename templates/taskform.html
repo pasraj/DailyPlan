@@ -5,7 +5,7 @@
     {% if pk %}
     <form action="/task/update/{{pk}}/" method="post">
       {% else %}
-      <form action="/task/create/" method="post">
+      <form action="/task/create/dailyupdate/" method="post">
       {% endif %}
 
       {% csrf_token %}
@@ -20,6 +20,8 @@
                {% bootstrap_button "submit" button_type="submit" button_class="btn-primary ms-60" %}
              </div>
            </div>
+
+           <a class="btn btn-warning" href="/task/"> cancel </a>
 
     </form>
 
