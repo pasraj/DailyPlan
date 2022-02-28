@@ -40,17 +40,23 @@
   </style>
 </head>
 <body>
+  <h2>{{currentDate}}</h2>
+
+  <div class="row px-5 float-right">
+          {% if is_same_day %}
+            {% if data %}
+            <a class="btn btn-primary" href="/task/update/{{data.id}}/">Update task</a>
+            {% else %}
+            <a class="btn btn-primary" href="/task/create/dailyupdate/">fill task</a>
+            {% endif %}
+          {% endif %}
+          <a class="btn btn-warning float-right" href="/logout/"> logout </a>
+  </div>
+
+
   <div class="px-5">
-
-      {% if data %}
-      <a class="btn btn-primary" href="/task/update/{{data.id}}/">Update task</a>
-      {% else %}
-      <a class="btn btn-primary" href="/task/create/">fill task</a>
-      {% endif %}
-
-      <i class="bi bi-arrow-return-left"><a href="#">Previous day</a></i>
-
-      <a class="btn btn-warning float-right" href="/logout/"> logout </a>
+      <i class="bi bi-arrow-return-left"><a class="btn btn-success" href="/task/{{previous_day}}/">Previous Day</a></i>
+      <i class="bi bi-arrow-return-left"><a class="btn btn-success" href="/task/{{next_day}}/"> Next Day</a></i>
   </div>
 
 
@@ -67,8 +73,8 @@
       {% for task in tasks %}
       <tr>
         <td>{{task.user.get_full_name}}</td>
-        <td>{{task.today_update|linebreaks}}</td>
         <td>{{task.yesterday_update|linebreaks}}</td>
+        <td>{{task.today_update|linebreaks}}</td>
         <td>{{task.blocker|linebreaks}}</td>
       </tr>
       {% endfor %}
